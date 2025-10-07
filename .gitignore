@@ -18,6 +18,10 @@ coverage.*
 *.coverprofile
 profile.cov
 
+image-service.txt
+prng-service.txt
+
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
