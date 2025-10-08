@@ -8,6 +8,7 @@
 *.so
 *.dylib
 .idea
+cs361-week1
 
 # Test binary, built with `go test -c`
 *.test

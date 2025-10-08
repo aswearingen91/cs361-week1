@@ -78,4 +78,23 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// read from file
+	imageFileData, err := os.ReadFile(imageFilePath)
+	if err != nil {
+		log.Printf("Error reading file: %v", err)
+	}
+	imageFileString := string(imageFileData)
+	var _, fileStringErr = os.Stat(imageFileString)
+	for fileStringErr != nil {
+		log.Printf("Image file's string indicates file that doesn't exist %s. Error: %v \n", imageFileString, fileStringErr)
+		time.Sleep(5 * time.Second)
+		imageFileData, err := os.ReadFile(imageFilePath)
+		if err != nil {
+			log.Printf("Error reading image service file: %v", err)
+		}
+		imageFileString = string(imageFileData)
+		_, fileStringErr = os.Stat(imageFileString)
+	}
+	fmt.Printf("Success! Image Service returned the path to the following image at: %s\n Exiting.\n", imageFileString)
+
 }
