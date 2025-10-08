@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"io/ioutil"
 	"strconv"
 	"time"
 )
@@ -26,8 +27,9 @@ Image service's responsibilities
 func main() {
 
 	imageFilePath := "image-service.txt"
+	imageDirectoryPath := "images"
 	randomImagePath := ""
-	var randomNumber int64 = -1
+	var randomNumber int = 1
 
 	// read from file
 	imageFileData, err := os.ReadFile(imageFilePath)
@@ -35,22 +37,31 @@ func main() {
 		log.Printf("Error reading file: %v", err)
 	}
 	imageFileString := string(imageFileData)
-	var _, fileStringErr = os.Stat(imageFileString)
-	for fileStringErr != nil {
-		log.Printf("Image file's string indicates file that doesn't exist %s. Error: %v \n", imageFileString, fileStringErr)
+	temp, err := strconv.ParseInt(imageFileString, 10, 64)
+	for err != nil {
+		log.Printf("Could not convert %s to integer. Error: %v \n", imageFileString, err)
 		time.Sleep(5 * time.Second)
 		imageFileData, err := os.ReadFile(imageFilePath)
 		if err != nil {
 			log.Printf("Error reading image service file: %v", err)
 		}
 		imageFileString = string(imageFileData)
-		randomNumber, err = strconv.ParseInt(imageFileString, 10, 64)
+		temp, err = strconv.ParseInt(imageFileString, 10, 64)
+
 		if err != nil {
 			log.Printf("Error parsing random number: %v", err)
 		}
 	}
+	randomNumber = int(temp)
 
 	_ = randomNumber
+	imagePaths, err := ioutil.ReadDir(imageDirectoryPath)
+	if err != nil {
+		log.Fatalf("Failed to read directory: %v", err)
+	}
+	var randomIndex int
+	randomIndex = randomNumber % (len(imagePaths) - 1)
+	randomImagePath = imagePaths[randomIndex].Name()
 
 	//image service communication
 	buffer := []byte(randomImagePath)
