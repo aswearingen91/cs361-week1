@@ -22,7 +22,13 @@ Random number programs's responsibilities
 */
 
 func main() {
+	for true {
 
+		run()
+	}
+}
+
+func run() {
 	prngFilePath := "prng-service.txt"
 	randomNumber := 1
 
@@ -63,6 +69,8 @@ func main() {
 
 	err = os.WriteFile(prngFilePath, data, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
+	log.Print("Success! Wrote random number to image-service	.txt")
+
 }

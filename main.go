@@ -73,7 +73,7 @@ func main() {
 
 	//image service communication
 	//data := []byte("run")
-	buffer := make([]byte, prngNumber)
+	buffer := []byte(strconv.Itoa(int(prngNumber)))
 	err = os.WriteFile(imageFilePath, buffer, 0644)
 	if err != nil {
 		log.Fatal(err)
