@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"strconv"
 	"time"
+	"flag"
+	"fmt"
 )
 
 // This will be the image service
@@ -26,16 +28,18 @@ Image service's responsibilities
 
 func main() {
 
+	imageDirectoryPtr := flag.String("images", "images", "directory containing images")
+	flag.Parse()
+
 	for true {
 
-		run()
+		run(*imageDirectoryPtr)
 	}
 }
 
-func run() {
+func run(imageDirectoryPath string) {
 
 	imageFilePath := "image-service.txt"
-	imageDirectoryPath := "images"
 	randomImagePath := ""
 	var randomNumber int = 1
 
@@ -69,7 +73,7 @@ func run() {
 	}
 	var randomIndex int
 	randomIndex = randomNumber % (len(imagePaths) - 1)
-	randomImagePath = imagePaths[randomIndex].Name()
+	randomImagePath = fmt.Sprintf("%s/%s/%s", os.Getenv("PWD"), imageDirectoryPath, imagePaths[randomIndex].Name())
 
 	//image service communication
 	buffer := []byte(randomImagePath)
